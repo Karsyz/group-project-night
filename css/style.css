@@ -1,6 +1,7 @@
 *{
   color: #CFD7C7;
   text-align: center;
+  box-sizing: border-box;
 }
 button{
   color: black;
@@ -12,10 +13,29 @@ span{
   display: block;
 }
 .emojiContainer{
+  height: 80px;
   display: flex;
+  flex-direction: row;
   justify-content: space-around;
+  align-items: center;
 }
 .emoji{
+  max-height: 60px;
   display: inline;
   font-size: 2rem;
+  padding: 5px;
+}
+
+.red {
+  background: red;
+  border: 2px solid red; 
+  border-radius: 5px;
+  outline-offset: 2px;
+  padding: 3px 0;
+}
+
+.green {
+  background: lightgreen;
+  border-radius: 5px;
+  padding: 3px 0;
 }
