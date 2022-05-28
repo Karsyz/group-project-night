@@ -1,11 +1,21 @@
 //document.querySelector('#clickMe').addEventListener('click', makeReq)
-document.querySelector('#rock').addEventListener('click', makeReq)
-document.querySelector('#paper').addEventListener('click', makeReq)
-document.querySelector('#scissors').addEventListener('click', makeReq)
+// document.querySelector('#rock').addEventListener('click', makeReq)
+// document.querySelector('#paper').addEventListener('click', makeReq)
+// document.querySelector('#scissors').addEventListener('click', makeReq)
+
+let wins;
+let draws;
+let losses;
+
+let emojis = document.querySelectorAll('.emoji');
+emojis.forEach(element => {
+  element.addEventListener('click', makeRequest);
+});
+
 document.querySelector('#resetStats').addEventListener('click', resetStats)
+initializeData();
 
-async function makeReq(event) {
-
+async function makeRequest(event) {
 
   const userName = event.target.id;
   //const userName = document.querySelector("#userName").value.toLowerCase();
@@ -14,54 +24,34 @@ async function makeReq(event) {
 
   console.log(data);
   //document.querySelector("#personName").textContent = `Result: ${data.resultText}`
-
-  document.querySelector("#personOccupation").textContent = `Computer chose: ${data.opponentAnswer}`
-  document.querySelector("#personStatus").textContent = `YOU ARE A ${data.status}`;
-
-  switch (data.result) {
-    case "win":
-      wins++
-      break;
-    case "tie":
-      draws++
-      break;
-    case "lose":
-      losses++
-      break;
-    default:
-      break;
-  }
-
-  localStorage.setItem("wins", wins);
-  localStorage.setItem("draws", draws);
-  localStorage.setItem("losses", losses);
-
-
+  displayResults(data);
+  updateSaveData();
   displayStats();
+}
 
-}
-let wins;
-let draws;
-let losses;
 
-if (!localStorage.getItem("wins", wins)) {
-  localStorage.setItem("wins", 0);
-  wins = 0;
-} else {
-  wins = localStorage.getItem("wins");
+function initializeData() {
+  if (!localStorage.getItem("wins", wins)) {
+    localStorage.setItem("wins", 0);
+    wins = 0;
+  } else {
+    wins = localStorage.getItem("wins");
+  }
+  if (!localStorage.getItem("draws", draws)) {
+    localStorage.setItem("draws", 0);
+    draws = 0;
+  } else {
+    draws = localStorage.getItem("draws");
+  }
+  if (!localStorage.getItem("losses", losses)) {
+    localStorage.setItem("losses", 0);
+    losses = 0;
+  } else {
+    losses = localStorage.getItem("losses");
+  }
 }
-if (!localStorage.getItem("draws", draws)) {
-  localStorage.setItem("draws", 0);
-  draws = 0;
-} else {
-  draws = localStorage.getItem("draws");
-}
-if (!localStorage.getItem("losses", losses)) {
-  localStorage.setItem("losses", 0);
-  losses = 0;
-} else {
-  losses = localStorage.getItem("losses");
-}
+
+
 
 displayStats();
 console.log(`wins: ${wins}, draws: ${draws}, losses: ${losses}`);
@@ -78,4 +68,31 @@ function displayStats() {
   document.querySelector("#wins").textContent = `Wins: ${wins}`;
   document.querySelector("#draws").textContent = `Draws: ${draws}`;
   document.querySelector("#losses").textContent = `Losses: ${losses}`;
+}
+
+function displayResults(data) {
+  document.querySelector("#personOccupation").textContent = `Computer chose: ${data.opponentAnswer}`
+  document.querySelector("#personStatus").textContent = `YOU ARE A ${data.status}`;
+
+  switch (data.result) {
+    case "win":
+      wins++
+      break;
+    case "tie":
+      draws++
+      break;
+    case "lose":
+      losses++
+      break;
+    default:
+      break;
+  }
+}
+
+
+function updateSaveData() {
+  localStorage.setItem("wins", wins);
+  localStorage.setItem("draws", draws);
+  localStorage.setItem("losses", losses);
+
 }
