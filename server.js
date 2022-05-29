@@ -4,6 +4,7 @@ const url = require('url');
 const querystring = require('querystring');
 const figlet = require('figlet')
 
+let notDB = loadDB('notDB.json')
 
 const server = http.createServer((req, res) => {
   function respondToRequest(dataType, fileName) {
@@ -49,6 +50,7 @@ const server = http.createServer((req, res) => {
           }
         }
         let compAnswer = getComputerAnswer();
+        notDB[params['student']]++
 
         if (
           compAnswer === 'rock' && params['student'] == 'paper' ||
@@ -62,6 +64,7 @@ const server = http.createServer((req, res) => {
             result: "win"
           }
           res.end(JSON.stringify(objToJson));
+          notDB["win"]++
         } else if (
           compAnswer === 'rock' && params['student'] == 'rock' ||
           compAnswer === 'paper' && params['student'] == 'paper' ||
@@ -74,6 +77,7 @@ const server = http.createServer((req, res) => {
             result: "tie"
           }
           res.end(JSON.stringify(objToJson));
+          notDB["tie"]++
         } else if (
           compAnswer === 'paper' && params['student'] == 'rock' ||
           compAnswer === 'scissors' && params['student'] == 'paper' ||
@@ -87,6 +91,7 @@ const server = http.createServer((req, res) => {
             result: "lose"
           }
           res.end(JSON.stringify(objToJson));
+          notDB["lose"]++
         }
         else {
           res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -118,8 +123,45 @@ const server = http.createServer((req, res) => {
       });
       break;
   }
+  // if DB is over 10,000ms old write to filesystem
+  if (Date.now() - notDB.timeStamp > 10000) {
+    notDB.timeStamp = Date.now()
+    saveDB('notDB.json', notDB)
+  }
 });
 server.listen(8000);
+
+function loadDB(path) {
+
+  // the 'a+' flag allows reading and appending but crucially
+  // will create a new blank file if needed for us.
+  const data = fs.readFileSync(path, { flag: 'a+' })
+  if (data.length) {
+    return JSON.parse(data)
+  } else {
+    // If no DB data just start a new object to be written later
+    // DB version for tracking migrations, timeStamp for tracking time of last write
+    return {
+      version: 0.1, timeStamp: Date.now(),
+      "rock": 0, "paper": 0, "scissors": 0,
+      "win": 0, "tie": 0, "lose": 0
+    }
+  }
+}
+
+function saveDB(path, obj) {
+  console.log("Saving")
+  fs.writeFile(path, JSON.stringify(obj, null, 2), err => { if (err) console.log(err) })
+}
+
+// save data if interrupt signal is sent (Ctrl-C) 
+process.on("SIGINT", () => {
+  console.log("terminating...")
+  notDB.timeStamp = Date.now()
+  fs.writeFileSync('notDB.json', JSON.stringify(notDB, null, 2), err => { if (err) console.log(err) })
+  console.log("Goodbye")
+  process.exit(0)
+})
 
 //   if (page == '/') {
 
