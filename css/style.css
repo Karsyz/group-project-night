@@ -20,6 +20,7 @@ span{
   align-items: center;
 }
 .emoji{
+  cursor: crosshair;
   max-height: 60px;
   display: inline;
   font-size: 2rem;
@@ -27,6 +28,14 @@ span{
 }
 
 .red {
+  border: thick solid darkred;
+  
+}
+.green{
+  outline: thick solid darkgreen;
+}
+
+/* .red {
   background: red;
   border: 2px solid red; 
   border-radius: 5px;
@@ -38,4 +47,4 @@ span{
   background: lightgreen;
   border-radius: 5px;
   padding: 3px 0;
-}
+} */

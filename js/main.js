@@ -16,8 +16,12 @@ document.querySelector('#resetStats').addEventListener('click', resetStats)
 initializeData();
 
 async function makeRequest(event) {
+  resetEmojis();
+  const element = event.target;
 
-  const userName = event.target.id;
+  const userName = element.id;
+  element.classList.toggle("red");
+
   //const userName = document.querySelector("#userName").value.toLowerCase();
   const res = await fetch(`/api?student=${userName}`)
   const data = await res.json()
@@ -62,6 +66,20 @@ function resetStats() {
   losses = 0;
   draws = 0;
   displayStats();
+  resetEmojis();
+  resetText();
+
+}
+
+function resetEmojis() {
+  emojis.forEach(element => {
+    element.classList.remove("red");
+    element.classList.remove("green");
+  })
+}
+function resetText() {
+  document.querySelector("#personOccupation").textContent = `Computer chose:`;
+  document.querySelector("#personStatus").textContent = `YOU ARE A `;
 }
 
 function displayStats() {
@@ -73,6 +91,7 @@ function displayStats() {
 function displayResults(data) {
   document.querySelector("#personOccupation").textContent = `Computer chose: ${data.opponentAnswer}`
   document.querySelector("#personStatus").textContent = `YOU ARE A ${data.status}`;
+  document.querySelector(`#${data.opponentAnswer}`).classList.toggle("green");
 
   switch (data.result) {
     case "win":
