@@ -27,8 +27,8 @@ async function makeRequest(event) {
   displayResults(data);
   updateSaveData();
   displayStats();
+  compyButton(data.opponentAnswer)
 }
-
 
 function initializeData() {
   if (!localStorage.getItem("wins", wins)) {
@@ -50,8 +50,6 @@ function initializeData() {
     losses = localStorage.getItem("losses");
   }
 }
-
-
 
 displayStats();
 console.log(`wins: ${wins}, draws: ${draws}, losses: ${losses}`);

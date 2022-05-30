@@ -26,16 +26,25 @@ span{
   padding: 5px;
 }
 
-.red {
-  background: red;
-  border: 2px solid red; 
+.compySel {
+  border: 2px solid #0B2027; 
   border-radius: 5px;
   outline-offset: 2px;
-  padding: 3px 0;
+  padding: 3px;
 }
 
-.green {
-  background: lightgreen;
-  border-radius: 5px;
-  padding: 3px 0;
+.playerSel {
+  border: 2px solid #F6F1D1; 
+  border-radius: 7px;
+  padding: 3px;
+}
+
+.subCont {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  height: 70px;
+  width: 70px;
+  outline-offset: 2px;
 }

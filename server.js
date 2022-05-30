@@ -111,6 +111,9 @@ const server = http.createServer((req, res) => {
     case '/js/main.js':
       respondToRequest('text/javascript', "js/main.js");
       break;
+    case '/js/buttonStyling.js':
+      respondToRequest('text/javascript', "js/buttonStyling.js");
+      break;
     default:
       figlet('404!!', function (err, data) {
         if (err) {
